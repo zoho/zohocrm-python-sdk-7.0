@@ -12,7 +12,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 setup(
     name='zohocrmsdk7_0',
     version='1.0.0',
-    description='Zoho CRM SDK for ZOHO CRM 6 APIs',
+    description='Zoho CRM SDK for ZOHO CRM v7 APIs',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/zoho/zohocrm-python-sdk-7.0',
