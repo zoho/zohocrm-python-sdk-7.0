@@ -247,12 +247,13 @@ class JSONConverter(Converter):
 
         if not skip_mandatory:
             for key_name, key_detail in module_detail.items():
-                name = key_detail[Constants.NAME]
-                if key_detail is not None and Constants.REQUIRED in key_detail and key_detail[Constants.REQUIRED]:
-                    required_keys[name] = True
+                if Constants.NAME in key_detail:
+                    name = key_detail[Constants.NAME]
+                    if key_detail is not None and Constants.REQUIRED in key_detail and key_detail[Constants.REQUIRED]:
+                        required_keys[name] = True
 
-                if key_detail is not None and Constants.PRIMARY in key_detail and key_detail[Constants.PRIMARY]:
-                    primary_keys[name] = True
+                    if key_detail is not None and Constants.PRIMARY in key_detail and key_detail[Constants.PRIMARY]:
+                        primary_keys[name] = True
 
             for key_name, key_detail in class_detail.items():
                 name = key_detail[Constants.NAME]
@@ -283,7 +284,7 @@ class JSONConverter(Converter):
                 custom_handling = True
 
             if key_value is not None:
-                if len(key_detail) > 0:
+                if key_detail is not None and len(key_detail) > 0:
                     if (Constants.READ_ONLY in key_detail and bool(key_detail[Constants.READ_ONLY])) or \
                             (Constants.NAME not in key_detail):
                         continue
@@ -291,6 +292,8 @@ class JSONConverter(Converter):
                     if self.value_checker(class_name, key_name, key_detail, key_value, self.unique_dict, instance_number):
                         json_value = self.set_data(key_detail, key_value)
                 else:
+                    if key_detail is None or len(key_detail) == 0:
+                        custom_handling = True
                     if custom_handling and not isinstance(key_value, list) and not isinstance(key_value, dict) and not isinstance(key_value, Choice):
                         if key_value.__class__.__name__ in Constants.PRIMITIVE_TYPES:
                             key_detail[Constants.TYPE] = Constants.PRIMITIVE_TYPES.get(key_value.__class__.__name__)
@@ -545,7 +548,7 @@ class JSONConverter(Converter):
             key_data = response_json[key_name]
             key_value = None
 
-            if len(key_detail) > 0:
+            if key_detail is not None and len(key_detail) > 0:
                 key_name = key_detail[Constants.NAME]
                 key_value = self.get_data(key_data, key_detail)
 

@@ -27,9 +27,9 @@ License
 
 - [1.0.0](/versions/1.0.0/README.md)
 
-    - JAVA SDK upgraded to support v7 APIs.
+    - Python SDK upgraded to support v7 APIs.
 
-    - JAVA SDK improved to support the following new APIs
+    - Python SDK improved to support the following new APIs
 
       - [Export Audit Log API]()
       - [Cadence API]()

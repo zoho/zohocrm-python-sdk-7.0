@@ -11,7 +11,7 @@ class DownloadBulkWriteResult(object):
     @staticmethod
     def initialize():
         environment = USDataCenter.PRODUCTION()
-        token = OAuthToken(client_id="client_id", client_secret="client_secret", grant_token="grant_token")
+        token = OAuthToken(client_id="clientID", client_secret="clientSecret", refresh_token="refreshToken")
         Initializer.initialize(environment, token)
 
     @staticmethod

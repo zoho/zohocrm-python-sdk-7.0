@@ -50,7 +50,7 @@ class HeaderParamValidator(object):
                 except Exception:
                     from .json_converter import JSONConverter
                     from .common_api_handler import CommonAPIHandler
-                return JSONConverter(CommonAPIHandler()).form_request(value, type_detail[Constants.TYPE], None, None)
+                return json.dumps(JSONConverter(CommonAPIHandler()).form_request(value, type_detail[Constants.TYPE], None, None))
             return self.parse_data(value, type_detail[Constants.TYPE])
         return value
 
