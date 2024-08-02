@@ -25,6 +25,10 @@ License
 
 ## Latest Version
 
+- [2.0.0](/versions/2.0.0/README.md)
+
+    - Handled Error Structure in MassDeleteTags API.
+
 - [1.0.0](/versions/1.0.0/README.md)
 
     - Python SDK upgraded to support v7 APIs.
@@ -48,7 +52,7 @@ For older versions, please [refer](https://github.com/zoho/zohocrm-python-sdk-7.
 ## Including the SDK in your project
 You can include the SDK to your project using:
 
-- For including the latest [version](https://github.com/zoho/zohocrm-python-sdk-7.0/releases/tag/1.0.0)
+- For including the latest [version](https://github.com/zoho/zohocrm-python-sdk-7.0/releases/tag/2.0.0)
 
     - Install **Python** from [python.org](https://www.python.org/downloads/) (if not installed).
 
@@ -75,4 +79,4 @@ For example, if you generate the tokens for your Sandbox environment in the CN d
 
 ---
 
-For more details, kindly refer [here](/versions/1.0.0/README.md).
+For more details, kindly refer [here](/versions/2.0.0/README.md).
