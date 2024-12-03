@@ -283,7 +283,6 @@ Before you get started with creating your Python application, you need to regist
 | token          | logger        |
 | environment    | store         |
 |                | sdk_config    |
-|                | proxy         |
 |                | resource_path |
 ----
 
@@ -400,20 +399,6 @@ The **environment** key contains the domain information to make API calls. The *
   resource_path = '/Users/python-app'
   ```
 
-- Create an instance of RequestProxy containing the proxy properties of the user.
-    ```python
-    from zohocrmsdk.src.com.zoho.crm.api.request_proxy import RequestProxy
-    """
-    RequestProxy takes the following parameters
-    1 -> Host
-    2 -> Port Number
-    3 -> User Name. Default value is None
-    4 -> Password. Default value is an empty string
-    """
-    # request_proxy = RequestProxy(host='proxyHost', port=80)
-    request_proxy = RequestProxy(host='proxyHost', port=80, user='userName', password='password')
-    ```
-
 ## Initializing the Application
 
 Initialize the SDK using the following code.
@@ -425,7 +410,6 @@ from zohocrmsdk.src.com.zoho.api.logger import Logger
 from zohocrmsdk.src.com.zoho.crm.api.initializer import Initializer
 from zohocrmsdk.src.com.zoho.api.authenticator.oauth_token import OAuthToken
 from zohocrmsdk.src.com.zoho.crm.api.sdk_config import SDKConfig
-from zohocrmsdk.src.com.zoho.crm.api.request_proxy import RequestProxy
 
 
 class SDKInitializer(object):
@@ -443,8 +427,6 @@ class SDKInitializer(object):
         config = SDKConfig(auto_refresh_fields=True, pick_list_validation=False, connect_timeout=None,
                            read_timeout=None)
         resource_path = '/Users/python-app'
-        # request_proxy = RequestProxy(host='host', port=8080)
-        request_proxy = RequestProxy(host='host', port=8080, user='user', password='password')
         """
         Call the static initialize method of Initializer class that takes the following arguments
         2 -> Environment instance
@@ -453,10 +435,9 @@ class SDKInitializer(object):
         5 -> SDKConfig instance
         6 -> resource_path
         7 -> Logger instance. Default value is None
-        8 -> RequestProxy instance. Default value is None
         """
         Initializer.initialize(environment=environment, token=token, store=store, sdk_config=config,
-                               resource_path=resource_path, logger=logger, proxy=request_proxy)
+                               resource_path=resource_path, logger=logger)
 
 
 SDKInitializer.initialize()
@@ -657,14 +638,10 @@ All other exceptions such as SDK anomalies and other unexpected behaviours are t
 ## Multithreading in a Multi-user App
 
 Multi-threading for multi-users is achieved using Initializer's static **switch_user()** method.
-switch_user() takes the value initialized previously for enviroment, token and sdk_config incase None is passed (or default value is passed). In case of request_proxy, if intended, the value has to be passed again else None(default value) will be taken.
+switch_user() takes the value initialized previously for enviroment, token and sdk_config incase None is passed (or default value is passed).
 
 ```python
-# without proxy
 Initializer.switch_user(environment=environment, token=token, sdk_config=sdk_config_instance)
-
-# with proxy
-Initializer.switch_user(environment=environment, token=token, sdk_config=sdk_config_instance, proxy=request_proxy)
 ```
 
 Here is a sample code to depict multi-threading for a multi-user app.
@@ -678,24 +655,21 @@ from zohocrmsdk.src.com.zoho.api.logger import Logger
 from zohocrmsdk.src.com.zoho.crm.api.initializer import Initializer
 from zohocrmsdk.src.com.zoho.api.authenticator.oauth_token import OAuthToken
 from zohocrmsdk.src.com.zoho.crm.api.record import *
-from zohocrmsdk.src.com.zoho.crm.api.request_proxy import RequestProxy
 from zohocrmsdk.src.com.zoho.crm.api.sdk_config import SDKConfig
 
 
 class MultiThread(threading.Thread):
 
-    def __init__(self, environment, token, module_api_name, sdk_config, proxy=None):
+    def __init__(self, environment, token, module_api_name, sdk_config):
         super().__init__()
         self.environment = environment
         self.token = token
         self.module_api_name = module_api_name
         self.sdk_config = sdk_config
-        self.proxy = proxy
 
     def run(self):
         try:
-            Initializer.switch_user(environment=self.environment, token=self.token, sdk_config=self.sdk_config,
-                                    proxy=self.proxy)
+            Initializer.switch_user(environment=self.environment, token=self.token, sdk_config=self.sdk_config)
             param_instance = ParameterMap()
             param_instance.add(GetRecordsParam.fields, "id")
             response = RecordOperations(self.module_api_name).get_records(param_instance)
@@ -738,11 +712,10 @@ class MultiThread(threading.Thread):
         sdk_config_2 = SDKConfig(auto_refresh_fields=False, pick_list_validation=True)
         token2 = OAuthToken(client_id="clientId2", client_secret="clientSecret2", grant_token="GRANT Token",
                             refresh_token="refresh_token", redirect_url="redirectURL", id="id")
-        request_proxy_user_2 = RequestProxy("host", 8080)
         Initializer.initialize(environment=environment1, token=token1, store=store, sdk_config=sdk_config_1,
                                resource_path=resource_path, logger=logger)
         t1 = MultiThread(environment1, token1, user1_module_api_name, sdk_config_1)
-        t2 = MultiThread(environment2, token2, user2_module_api_name, sdk_config_2, request_proxy_user_2)
+        t2 = MultiThread(environment2, token2, user2_module_api_name, sdk_config_2)
         t1.start()
         t2.start()
         t1.join()
