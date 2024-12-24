@@ -73,6 +73,6 @@ class UpdateModuleById:
                     print("Message: " + response_object.get_message())
 
 
-module_id = 3477061000000485367
+module_id = 34770610485367
 UpdateModuleById.initialize()
 UpdateModuleById.update_module_by_id(module_id)

@@ -1,51 +1,42 @@
 from zohocrmsdk.src.com.zoho.api.authenticator import OAuthToken
-from zohocrmsdk.src.com.zoho.crm.api import Initializer
+from zohocrmsdk.src.com.zoho.crm.api import Initializer, ParameterMap
+from zohocrmsdk.src.com.zoho.crm.api.attachments import AttachmentsOperations, UploadUrlAttachmentsParam, ActionWrapper, \
+    SuccessResponse, APIException
 from zohocrmsdk.src.com.zoho.crm.api.dc import USDataCenter
-from zohocrmsdk.src.com.zoho.crm.api.modules import APIException, SuccessResponse, ActionWrapper, ModulesOperations, \
-    Modules, BodyWrapper
-from zohocrmsdk.src.com.zoho.crm.api.profiles import MinifiedProfile
 
 
-class UpdateModuleById:
+class UploadLinkAttachment(object):
+
     @staticmethod
     def initialize():
         environment = USDataCenter.PRODUCTION()
-        token = OAuthToken(client_id="clientID", client_secret="clientSecret", refresh_token="refreshToken")
+        token = OAuthToken(client_id="client_id", client_secret="client_secret", grant_token="grant_token")
         Initializer.initialize(environment, token)
 
     @staticmethod
-    def update_module_by_id(module_id):
+    def upload_link_attachment(module_api_name, record_id, attachment_url):
         """
-        This method is used to update module details using module Id and print the response.
-        :param module_id: The id of the module to update
+        This method is used to upload link attachment and print the response.
+        :param module_api_name: The API Name of the record's module
+        :param record_id: The ID of the record to upload Link attachment
+        :param attachment_url: The attachment url of the doc or image link to be attached
         """
         """
         example
-        module_id = 34096430252001
+        module_api_name = "Leads";
+        record_id = 3409643002267003
+        attachment_url = "https://5.imimg.com/data5/KJ/UP/MY-8655440/zoho-crm-500x500.png";
         """
-        modules_operations = ModulesOperations()
-        modules_list = []
-        profiles_list = []
-        profile = MinifiedProfile()
-        # To set the Profile Id
-        profile.set_id(440280031160)
-        # profile.set_delete(True)
-        # Add Profile instance to the list
-        profiles_list.append(profile)
-        module = Modules()
-        module.set_profiles(profiles_list)
-        # Add the Module instance to list
-        modules_list.append(module)
-        request = BodyWrapper()
-        request.set_modules(modules_list)
-        # Call update_module_by_id method that takes BodyWrapper instance and module_id as parameter
-        response = modules_operations.update_module(module_id, request)
+        attachments_operations = AttachmentsOperations()
+        param_instance = ParameterMap()
+        param_instance.add(UploadUrlAttachmentsParam.attachmenturl, attachment_url)
+        response = attachments_operations.upload_url_attachments(record_id, module_api_name, param_instance)
         if response is not None:
             print('Status Code: ' + str(response.get_status_code()))
             response_object = response.get_object()
             if response_object is not None:
                 if isinstance(response_object, ActionWrapper):
-                    action_response_list = response_object.get_modules()
+                    action_response_list = response_object.get_data()
                     for action_response in action_response_list:
                         if isinstance(action_response, SuccessResponse):
                             print("Status: " + action_response.get_status().get_value())
@@ -73,6 +64,7 @@ class UpdateModuleById:
                     print("Message: " + response_object.get_message())
 
 
-module_id = 347706485367
-UpdateModuleById.initialize()
-UpdateModuleById.update_module_by_id(module_id)
+UploadLinkAttachment.initialize()
+UploadLinkAttachment.upload_link_attachment(module_api_name="Leads", record_id=3477001,
+                                            attachment_url="https://5.imimg.com/data5/KJ/UP/MY-860/zoho-crm-500x500.png"
+                                            )

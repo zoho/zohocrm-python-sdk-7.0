@@ -1,51 +1,39 @@
 from zohocrmsdk.src.com.zoho.api.authenticator import OAuthToken
 from zohocrmsdk.src.com.zoho.crm.api import Initializer
+from zohocrmsdk.src.com.zoho.crm.api.attachments import AttachmentsOperations, ActionWrapper, SuccessResponse, \
+    APIException
 from zohocrmsdk.src.com.zoho.crm.api.dc import USDataCenter
-from zohocrmsdk.src.com.zoho.crm.api.modules import APIException, SuccessResponse, ActionWrapper, ModulesOperations, \
-    Modules, BodyWrapper
-from zohocrmsdk.src.com.zoho.crm.api.profiles import MinifiedProfile
 
 
-class UpdateModuleById:
+class DeleteAttachment:
     @staticmethod
     def initialize():
         environment = USDataCenter.PRODUCTION()
-        token = OAuthToken(client_id="clientID", client_secret="clientSecret", refresh_token="refreshToken")
+        token = OAuthToken(client_id="client_id", client_secret="client_secret", grant_token="grant_token")
         Initializer.initialize(environment, token)
 
     @staticmethod
-    def update_module_by_id(module_id):
+    def delete_attachment(module_api_name, record_id, attachment_id):
         """
-        This method is used to update module details using module Id and print the response.
-        :param module_id: The id of the module to update
+        This method is used to delete an attachment of a single record with ID and attachment ID and print the response
+        :param module_api_name: The API Name of the record's module
+        :param record_id: The ID of the record to delete attachment
+        :param attachment_id: The ID of the attachment to be deleted
         """
         """
         example
-        module_id = 34096430252001
+        module_api_name = "Leads";
+        record_id = 3409643002267003
+        attachment_id = 3409643002267024
         """
-        modules_operations = ModulesOperations()
-        modules_list = []
-        profiles_list = []
-        profile = MinifiedProfile()
-        # To set the Profile Id
-        profile.set_id(440280031160)
-        # profile.set_delete(True)
-        # Add Profile instance to the list
-        profiles_list.append(profile)
-        module = Modules()
-        module.set_profiles(profiles_list)
-        # Add the Module instance to list
-        modules_list.append(module)
-        request = BodyWrapper()
-        request.set_modules(modules_list)
-        # Call update_module_by_id method that takes BodyWrapper instance and module_id as parameter
-        response = modules_operations.update_module(module_id, request)
+        attachments_operations = AttachmentsOperations()
+        response = attachments_operations.delete_attachment(attachment_id, record_id, module_api_name)
         if response is not None:
             print('Status Code: ' + str(response.get_status_code()))
             response_object = response.get_object()
             if response_object is not None:
                 if isinstance(response_object, ActionWrapper):
-                    action_response_list = response_object.get_modules()
+                    action_response_list = response_object.get_data()
                     for action_response in action_response_list:
                         if isinstance(action_response, SuccessResponse):
                             print("Status: " + action_response.get_status().get_value())
@@ -73,6 +61,5 @@ class UpdateModuleById:
                     print("Message: " + response_object.get_message())
 
 
-module_id = 347706485367
-UpdateModuleById.initialize()
-UpdateModuleById.update_module_by_id(module_id)
+DeleteAttachment.initialize()
+DeleteAttachment.delete_attachment(module_api_name="Leads", record_id=3477613001, attachment_id=3477576001)
