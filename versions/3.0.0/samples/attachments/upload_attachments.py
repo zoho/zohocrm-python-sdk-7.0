@@ -1,51 +1,55 @@
 from zohocrmsdk.src.com.zoho.api.authenticator import OAuthToken
 from zohocrmsdk.src.com.zoho.crm.api import Initializer
+from zohocrmsdk.src.com.zoho.crm.api.attachments import AttachmentsOperations, FileBodyWrapper, ActionWrapper, \
+    SuccessResponse, APIException
 from zohocrmsdk.src.com.zoho.crm.api.dc import USDataCenter
-from zohocrmsdk.src.com.zoho.crm.api.modules import APIException, SuccessResponse, ActionWrapper, ModulesOperations, \
-    Modules, BodyWrapper
-from zohocrmsdk.src.com.zoho.crm.api.profiles import MinifiedProfile
+from zohocrmsdk.src.com.zoho.crm.api.util import StreamWrapper
 
 
-class UpdateModuleById:
+class UploadAttachments(object):
+
     @staticmethod
     def initialize():
         environment = USDataCenter.PRODUCTION()
-        token = OAuthToken(client_id="clientID", client_secret="clientSecret", refresh_token="refreshToken")
+        token = OAuthToken(client_id="client_id", client_secret="client_secret", grant_token="grant_token")
         Initializer.initialize(environment, token)
 
     @staticmethod
-    def update_module_by_id(module_id):
+    def upload_attachments(module_api_name, record_id, file_path):
         """
-        This method is used to update module details using module Id and print the response.
-        :param module_id: The id of the module to update
+        This method is used to upload attachments and print the response
+        :param module_api_name: The API Name of the record's module
+        :param record_id: The ID of the record to upload attachment
+        :param file_path: The absolute file path of the file to be attached
         """
         """
         example
-        module_id = 34096430252001
+        module_api_name= "Leads"
+        record_id = 3409643002267003
+        file_path = "../image.jpg";
         """
-        modules_operations = ModulesOperations()
-        modules_list = []
-        profiles_list = []
-        profile = MinifiedProfile()
-        # To set the Profile Id
-        profile.set_id(440280031160)
-        # profile.set_delete(True)
-        # Add Profile instance to the list
-        profiles_list.append(profile)
-        module = Modules()
-        module.set_profiles(profiles_list)
-        # Add the Module instance to list
-        modules_list.append(module)
-        request = BodyWrapper()
-        request.set_modules(modules_list)
-        # Call update_module_by_id method that takes BodyWrapper instance and module_id as parameter
-        response = modules_operations.update_module(module_id, request)
+        attachments_operations = AttachmentsOperations()
+        file_body_wrapper = FileBodyWrapper()
+        """
+        StreamWrapper can be initialized in any of the following ways
+        * param 1 -> fileName 
+        * param 2 -> Read Stream.
+        """
+        # stream_wrapper = StreamWrapper(stream=open(file_path, 'rb'))
+        """
+        * param 1 -> fileName
+        * param 2 -> Read Stream
+        * param 3 -> Absolute File Path of the file to be attached
+        """
+        stream_wrapper = StreamWrapper(file_path=file_path)
+        file_body_wrapper.set_file(stream_wrapper)
+        response = attachments_operations.upload_attachments(record_id, module_api_name, file_body_wrapper)
         if response is not None:
             print('Status Code: ' + str(response.get_status_code()))
             response_object = response.get_object()
             if response_object is not None:
                 if isinstance(response_object, ActionWrapper):
-                    action_response_list = response_object.get_modules()
+                    action_response_list = response_object.get_data()
                     for action_response in action_response_list:
                         if isinstance(action_response, SuccessResponse):
                             print("Status: " + action_response.get_status().get_value())
@@ -73,6 +77,5 @@ class UpdateModuleById:
                     print("Message: " + response_object.get_message())
 
 
-module_id = 347706485367
-UpdateModuleById.initialize()
-UpdateModuleById.update_module_by_id(module_id)
+UploadAttachments.initialize()
+UploadAttachments.upload_attachments(module_api_name="Leads", record_id=3477001, file_path="./sample.txt")
