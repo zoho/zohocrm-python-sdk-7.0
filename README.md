@@ -28,13 +28,13 @@ License
 - [5.0.0](/versions/5.0.0/README.md)
 
   - Added new **page_token** param in GetAttachmentsParam class.
-  - DealContactRolesOperations class method name chnaged(deleteContactRoleRealation to deleteContactRoleRelation).
+  - DealContactRolesOperations class method name chnaged(delete_contact_role_realation to delete_contact_role_relation).
   - Added **category**, **sort_by**, **sort_order**, and **filters** param in GetEmailTemplatesParam class.
-  - Added new fields (**referenceValue**, **dealCategory**, and **showValue**) in fields PickListValue class.
+  - Added new fields (**reference_value**, **deal_category**, and **show_value**) in fields PickListValue class.
   - Added new **filters** param in GetInventoryTemplatesParam class.
-  - Modules **displayField** field datatype changed(String to Object).
+  - Modules **display_field** field datatype changed(String to Object).
   - Added new **status** param in GetModulesParam class.
-  - Added new **paramInstance** param in ModulesOperations class **getModules** method.
+  - Added new **param_instance** param in ModulesOperations class **get_modules** method.
   - Added new **type** param in SearchRecordsParam class.
   - Added new **cvid** param in RecordCountParam class.
   - Added new **page_token**, **page**, and **per_page** param in GetRecordLockingInformationsParam class.
@@ -42,18 +42,18 @@ License
   - Added new **ids** param in GetTerritoriesParam class.
   - Added new **page** and **per_page** param in GetChildTerritoryParam class.
   - Added new **filters**, **page**, and **per_page** param in GetAssociatedUsersCountParam class.
-  - Added new **paramInstance** param in UserGroupsOperations class **getAssociatedUsersCount** method.
-  - Removed module param in **ScoringRulesOperations** class **getScoringRule** method.
-  - Update recordId, moduleAPIName to moduleAPIName, recordId param location in **TagsOperations** class addTags method.
-  - Update recordId, moduleAPIName to moduleAPIName, recordId param location in **TagsOperations** class removeTags method.
-  - **CadencesExecutionOperations** class method name changed(enrolCadences to enrollCadences).
-  - **CadencesExecutionOperations** class method name changed(unenrolCadences to unenrollCadences).
+  - Added new **param_instance** param in UserGroupsOperations class **get_associated_users_count** method.
+  - Removed module param in **ScoringRulesOperations** class **get_scoring_rule** method.
+  - Update record_id, module_api_name to module_api_name, record_id param location in **TagsOperations** class add_tags method.
+  - Update record_id, module_api_name to module_api_name, record_id param location in **TagsOperations** class remove_tags method.
+  - **CadencesExecutionOperations** class method name changed(enrol_cadences to enroll_cadences).
+  - **CadencesExecutionOperations** class method name changed(unenrol_cadences to unenroll_cadences).
   - Deprecated and removed API methods:
     - UsersTerritories
-      - validateBeforeTransferForAllTerritories
-      - validateBeforeTransfer
-      - delinkAndTransferFromAllTerritories
-      - delinkAndTransferFromSpecificTerritory
+      - validate_before_transfer_for_all_territories
+      - validate_before_transfer
+      - delink_and_transfer_from_all_territories
+      - delink_and_transfer_from_specific_territory
   - Support for the following new APIs
     - AuditLogExport
       - [Download Export Audit Log Result](https://www.zoho.com/crm/developer/docs/api/v7/download-export-audit-log-result.html)
