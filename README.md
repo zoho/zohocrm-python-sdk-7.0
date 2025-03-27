@@ -25,6 +25,10 @@ License
 
 ## Latest Version
 
+- [6.0.0](/versions/6.0.0/README.md)
+  - Get Modules meta error handling in Utility class.
+  - Validated API parameters and headers for name and data type.
+
 - [5.0.0](/versions/5.0.0/README.md)
 
   - Added new **page_token** param in GetAttachmentsParam class.
@@ -126,7 +130,7 @@ For older versions, please [refer](https://github.com/zoho/zohocrm-python-sdk-7.
 ## Including the SDK in your project
 You can include the SDK to your project using:
 
-- For including the latest [version](https://github.com/zoho/zohocrm-python-sdk-7.0/releases/tag/5.0.0)
+- For including the latest [version](https://github.com/zoho/zohocrm-python-sdk-7.0/releases/tag/6.0.0)
 
     - Install **Python** from [python.org](https://www.python.org/downloads/) (if not installed).
 
@@ -153,4 +157,4 @@ For example, if you generate the tokens for your Sandbox environment in the CN d
 
 ---
 
-For more details, kindly refer [here](/versions/5.0.0/README.md).
+For more details, kindly refer [here](/versions/6.0.0/README.md).
